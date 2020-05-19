@@ -21,9 +21,9 @@
 
 // Heatmap Config stores default values and will be merged with instance config
 var HeatmapConfig = {
-  defaultRadius: 40,
+  defaultRadius: 30,
   defaultRenderer: 'canvas2d',
-  defaultGradient: { 0.25: "rgb(0,0,255)", 0.55: "rgb(0,255,0)", 0.85: "yellow", 1.0: "rgb(255,0,0)"},
+  defaultGradient: { 0.25: "rgb(0,0,255)", 0.34: "rgb(0,255,0)", 0.85: "yellow", 1.0: "rgb(255,0,0)"},
   defaultMaxOpacity: 1,
   defaultMinOpacity: 0,
   defaultBlur: .85,
@@ -346,7 +346,7 @@ var Canvas2dRenderer = (function Canvas2dRendererClosure() {
     // @TODO:
     // conditional wrapper
 
-    canvas.style.cssText = shadowCanvas.style.cssText = 'position:absolute;left:0;top:0;';
+    canvas.style.cssText = shadowCanvas.style.cssText = 'position:absolute;left:0;top:0;max-height:100%;width:100%;opacity:0';
 
     container.style.position = 'relative';
     container.appendChild(canvas);
@@ -736,13 +736,9 @@ return heatmapFactory;
     container: document.querySelector('body'),
     backgroundColor: 'rgba(0,0,0,.55)',
     blur: 0.95,
-    gradient: {
-      '.60': 'blue',
-      '.78': 'red',
-      '.95': 'white'
-    },
+
   
-    maxOpacity: .7,
+    maxOpacity: .9,
     minOpacity: .3
   });
   let token,dataLeg;
