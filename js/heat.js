@@ -741,8 +741,9 @@ function Initial(className){
   });
 }
 
+let token,dataLeg,usId, heatmapInstance;
 Initial('body');
-  let token,dataLeg,usId;
+
 
   axios.post(`http://localhost:3080/users/auth`,{
     username:'log@google.com',
