@@ -721,11 +721,9 @@ return heatmapFactory;
     localStorage.setItem('visit',true);
   }
 
-let token,dataLeg,usId, heatmapInstance;
-Initial('body');
-function Initial(className){
-  document.querySelector(className).onclick = function(ev) {
-    console.log(ev)
+let token,dataLeg,usIdж
+
+  document.querySelector('body').onclick = function(ev) {
     heatmapInstance.addData({
       x: ev.pageX,
       y: ev.pageY,
@@ -733,14 +731,14 @@ function Initial(className){
       radius: 20
     });
   };
-  var heatmapInstance = h337.create({
-    container: document.querySelector(className), //heatmapContainer
+  const heatmapInstance = h337.create({
+    container: document.querySelector('body'), //heatmapContainer
     backgroundColor: 'rgba(0,0,0,.55)',
     blur: 0.95, 
     maxOpacity: .9,
     minOpacity: .3
   });
-}
+
 
 
 
