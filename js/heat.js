@@ -1,11 +1,4 @@
-/*
- * heatmap.js v2.0.5 | JavaScript Heatmap Library
- *
- * Copyright 2008-2016 Patrick Wied <heatmapjs@patrick-wied.at> - All rights reserved.
- * Dual licensed under MIT and Beerware license 
- *
- * :: 2016-09-05 01:16
- */
+
 ;(function (name, context, factory) {
 
   // Supports UMD. AMD, CommonJS/Node.js and browser context
@@ -346,7 +339,7 @@ var Canvas2dRenderer = (function Canvas2dRendererClosure() {
     // @TODO:
     // conditional wrapper
 
-    canvas.style.cssText = shadowCanvas.style.cssText = 'position:absolute;left:0;top:0;max-height:100%;width:100%;opacity:0';
+    canvas.style.cssText = shadowCanvas.style.cssText = 'position:absolute;left:0;top:0;max-height:100%;width:100%;opacity:0;z-index:-1';
 
     container.style.position = 'relative';
     container.appendChild(canvas);
@@ -720,8 +713,13 @@ var heatmapFactory = {
 
 return heatmapFactory;
 
-
 });
+(function(){
+  if(localStorage.getItem('visit')){
+    let visit = true
+  } else {
+    localStorage.setItem('visit',true);
+  }
 
   document.querySelector('body').onclick = function(ev) {
     heatmapInstance.addData({
@@ -733,42 +731,57 @@ return heatmapFactory;
   
   };
   var heatmapInstance = h337.create({
-    container: document.querySelector('body'),
+    container: document.querySelector('body'), //heatmapContainer
     backgroundColor: 'rgba(0,0,0,.55)',
-    blur: 0.95,
-
-  
+    blur: 0.95, 
     maxOpacity: .9,
     minOpacity: .3
   });
-  let token,dataLeg;
+  let token,dataLeg,usId;
+
   axios.post(`http://localhost:3080/users/auth`,{
     username:'log@google.com',
     password:'123'
   }).then(
     res =>{
       token = res.data.access_token;
-      axios.get(`http://localhost:3080/products/03232a5c-0078-4888-bca7-4fda41b1298c`,
+      usId = res.data.id
+      axios.get(`http://localhost:3080/products/${usId}`,
       {
         headers: {
           'Authorization': 'Bearer ' + res.data.access_token,
           'Content-Type': 'application/json'
         }
       }).then( res =>{
-        console.log(res.data);
-        dataLeg = res.data;
+        dataLeg = res.data.info;
         if(res.data[window.location.host+window.location.pathname]){
-          console.log(1);
           heatmapInstance.setData(res.data[window.location.host+window.location.pathname]);
         }
       })
     }
   )
+  let endSite = false;
+  window.addEventListener('scroll',(e)=>{
+      if($(window).scrollTop()+5 > $(document).height() - $(window).height()) 
+     {
+          endSite = true
+     }
+  })
   window.addEventListener('beforeunload', function (e) {
     dataLeg[window.location.host+window.location.pathname] = heatmapInstance.getData();
-    var json = JSON.stringify(dataLeg);
+    var json = JSON.stringify({
+      info:dataLeg,
+      statistic:{
+        unique:localStorage.getItem('visit')?true:false,
+        timeOnSite: performance.now()/1000,
+        rageQuit: performance.now()/1000 < 15?true: false,
+        endSite
+
+      }
+    });
+    console.log(json);
     var xhr = new XMLHttpRequest();
-    xhr.open('PUT',`http://localhost:3080/products/03232a5c-0078-4888-bca7-4fda41b1298c`,true);
+    xhr.open('PUT',`http://localhost:3080/products/${usId}`,true);
     xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
     xhr.send(json);
   
@@ -777,8 +790,10 @@ return heatmapFactory;
     (e || window.event).returnValue = confirmationMessage;
     return 'Youre leaving';
   }, false);
+})();
+  
 
 
 
 
-
+// axios.get('http://mini.s-shot.ru/1024/1920/?https://aleks253545.github.io/').then(res=> document.querySelector('.logo').setAttribute('src',res.config.url));
