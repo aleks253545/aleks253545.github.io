@@ -724,11 +724,13 @@ return heatmapFactory;
 
 function Initial(className){
   document.querySelector(className).onclick = function(e) {
-    const target = document.querySelector(className); 
-    const targetCoords = target.getBoundingClientRect();
+    let target = document.querySelector(className), // Здесь что-то уникальное, что может указать на род. блок
+    targetCoords = target.getBoundingClientRect(),
+    xCoord = e.clientX - targetCoords.left,
+    yCoord = e.clientY - targetCoords.top;
     heatmapInstance.addData({
-      x: e.clientY - targetCoords.top,
-      y: e.clientX - targetCoords.left,
+      x: xCoord,
+      y: yCoord,
       value: 9,
       radius: 20
     });
