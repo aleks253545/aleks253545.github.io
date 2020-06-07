@@ -721,7 +721,8 @@ return heatmapFactory;
     localStorage.setItem('visit',true);
   }
 
-
+let token,dataLeg,usId, heatmapInstance;
+Initial('body');
 function Initial(className){
   document.querySelector(className).onclick = function(ev) {
     console.log(ev)
@@ -741,8 +742,7 @@ function Initial(className){
   });
 }
 
-let token,dataLeg,usId, heatmapInstance;
-Initial('body');
+
 
 
   axios.post(`http://localhost:3080/users/auth`,{
