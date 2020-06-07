@@ -721,7 +721,7 @@ return heatmapFactory;
     localStorage.setItem('visit',true);
   }
 
-  document.querySelector('body').onclick = function(ev) {
+  document.querySelector('.heatmapContainer').onclick = function(ev) {
     heatmapInstance.addData({
       x: ev.pageX,
       y: ev.pageY,
