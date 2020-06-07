@@ -721,24 +721,30 @@ return heatmapFactory;
     localStorage.setItem('visit',true);
   }
 
-  document.querySelector('canvas').onclick = function(ev) {
+
+function Initial(className){
+  document.querySelector(className).onclick = function(e) {
+    const target = document.querySelector(className); 
+    const targetCoords = target.getBoundingClientRect();
     heatmapInstance.addData({
-      x: ev.pageX,
-      y: ev.pageY,
+      x: e.clientY - targetCoords.top,
+      y: e.clientX - targetCoords.left,
       value: 9,
       radius: 20
     });
-  
   };
-  var heatmapInstance = h337.create({
-    container: document.querySelector('.heatmapContainer'), //heatmapContainer
+  heatmapInstance = h337.create({
+    container: document.querySelector(className), //heatmapContainer
     backgroundColor: 'rgba(0,0,0,.55)',
     blur: 0.95, 
     maxOpacity: .9,
     minOpacity: .3
   });
-  let token,dataLeg,usId;
+}
 
+
+  let token,dataLeg,usId,heatmapInstance;
+  Initial('.heatmapContainer');
   axios.post(`http://localhost:3080/users/auth`,{
     username:'log@google.com',
     password:'123'
