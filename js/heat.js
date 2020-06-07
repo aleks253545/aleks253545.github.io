@@ -723,19 +723,16 @@ return heatmapFactory;
 
 
 function Initial(className){
-  document.querySelector(className).onclick = function(e) {
-    let target = document.querySelector(className), // Здесь что-то уникальное, что может указать на род. блок
-    targetCoords = target.getBoundingClientRect(),
-    xCoord = e.clientX - targetCoords.left,
-    yCoord = e.clientY - targetCoords.top;
+  document.querySelector(className).onclick = function(ev) {
+    console.log(ev)
     heatmapInstance.addData({
-      x: xCoord,
-      y: yCoord,
+      x: ev.pageX,
+      y: ev.pageY,
       value: 9,
       radius: 20
     });
   };
-  heatmapInstance = h337.create({
+  var heatmapInstance = h337.create({
     container: document.querySelector(className), //heatmapContainer
     backgroundColor: 'rgba(0,0,0,.55)',
     blur: 0.95, 
@@ -744,9 +741,9 @@ function Initial(className){
   });
 }
 
+Initial('body');
+  let token,dataLeg,usId;
 
-  let token,dataLeg,usId,heatmapInstance;
-  Initial('.heatmapContainer');
   axios.post(`http://localhost:3080/users/auth`,{
     username:'log@google.com',
     password:'123'
