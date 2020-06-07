@@ -731,7 +731,7 @@ return heatmapFactory;
   
   };
   var heatmapInstance = h337.create({
-    container: document.querySelector('body'), //heatmapContainer
+    container: document.querySelector('.heatmapContainer'), //heatmapContainer
     backgroundColor: 'rgba(0,0,0,.55)',
     blur: 0.95, 
     maxOpacity: .9,
