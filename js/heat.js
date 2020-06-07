@@ -755,7 +755,7 @@ return heatmapFactory;
       }).then( res =>{
         dataLeg = res.data.info;
         if(res.data[window.location.host+window.location.pathname]){
-          heatmapInstance.setData(res.data[window.location.host+window.location.pathname]);
+          heatmapInstance.setData(res.data.info[window.location.host+window.location.pathname]);
         }
       })
     }
