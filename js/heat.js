@@ -301,7 +301,7 @@ var Canvas2dRenderer = (function Canvas2dRendererClosure() {
     // @TODO:
     // conditional wrapper
 
-    canvas.style.cssText = shadowCanvas.style.cssText = 'position:absolute;left:0;top:0;max-height:100%;width:100%;opacity:0;z-index:-1';
+    canvas.style.cssText = shadowCanvas.style.cssText = 'position:absolute;left:0;top:0;max-height:100%;width:100%;opacity:1;z-index:10';
 
     container.style.position = 'relative';
     container.appendChild(canvas);
@@ -687,7 +687,7 @@ let token,dataLeg,usIdж
   };
   const heatmapInstance = htmp.create({
     container: document.querySelector('body'), //heatmapContainer
-    backgroundColor: 'rgba(0,0,0,.55)',
+    backgroundColor: 'rgba(0,0,0,0)',
     blur: 0.95, 
     maxOpacity: .9,
     minOpacity: .3
@@ -728,7 +728,7 @@ let token,dataLeg,usIdж
   window.addEventListener('beforeunload', function (e) {
     dataLeg[window.location.host+window.location.pathname] = heatmapInstance.getData();
     var json = JSON.stringify({
-      info:{},
+      info:{dataLeg},
       statistic:{
         unique:localStorage.getItem('visit')?true:false,
         timeOnSite: performance.now()/1000,
