@@ -10,7 +10,7 @@
     context[name] = factory();
   }
 
-})("h337", this, function () {
+})("htmp", this, function () {
 
 // Heatmap Config stores default values and will be merged with instance config
 var HeatmapConfig = {
@@ -194,45 +194,7 @@ var Store = (function StoreClosure() {
     },
     getData: function() {
       return this._unOrganizeData();
-    }/*,
-
-      TODO: rethink.
-
-    getValueAt: function(point) {
-      var value;
-      var radius = 100;
-      var x = point.x;
-      var y = point.y;
-      var data = this._data;
-
-      if (data[x] && data[x][y]) {
-        return data[x][y];
-      } else {
-        var values = [];
-        // radial search for datapoints based on default radius
-        for(var distance = 1; distance < radius; distance++) {
-          var neighbors = distance * 2 +1;
-          var startX = x - distance;
-          var startY = y - distance;
-
-          for(var i = 0; i < neighbors; i++) {
-            for (var o = 0; o < neighbors; o++) {
-              if ((i == 0 || i == neighbors-1) || (o == 0 || o == neighbors-1)) {
-                if (data[startY+i] && data[startY+i][startX+o]) {
-                  values.push(data[startY+i][startX+o]);
-                }
-              } else {
-                continue;
-              } 
-            }
-          }
-        }
-        if (values.length > 0) {
-          return Math.max.apply(Math, values);
-        }
-      }
-      return false;
-    }*/
+    }
   };
 
 
@@ -405,7 +367,6 @@ var Canvas2dRenderer = (function Canvas2dRendererClosure() {
       var max = this._max = data.max;
       var data = data.data || [];
       var dataLen = data.length;
-      // on a point basis?
       var blur = 1 - this._blur;
 
       while(dataLen--) {
@@ -415,8 +376,6 @@ var Canvas2dRenderer = (function Canvas2dRendererClosure() {
         var x = point.x;
         var y = point.y;
         var radius = point.radius;
-        // if value is bigger than max
-        // use max as value
         var value = Math.min(point.value, max);
         var rectX = x - radius;
         var rectY = y - radius;
@@ -431,15 +390,10 @@ var Canvas2dRenderer = (function Canvas2dRendererClosure() {
         } else {
           tpl = this._templates[radius];
         }
-        // value from minimum / value range
-        // => [0, 1]
         var templateAlpha = (value-min)/(max-min);
-        // this fixes #176: small values are not visible because globalAlpha < .01 cannot be read from imageData
         shadowCtx.globalAlpha = templateAlpha < .01 ? .01 : templateAlpha;
 
         shadowCtx.drawImage(tpl, rectX, rectY);
-
-        // update renderBoundaries
         if (rectX < this._renderBoundaries[0]) {
             this._renderBoundaries[0] = rectX;
           }
@@ -731,7 +685,7 @@ let token,dataLeg,usIdж
       radius: 20
     });
   };
-  const heatmapInstance = h337.create({
+  const heatmapInstance = htmp.create({
     container: document.querySelector('body'), //heatmapContainer
     backgroundColor: 'rgba(0,0,0,.55)',
     blur: 0.95, 
@@ -774,14 +728,14 @@ let token,dataLeg,usIdж
   window.addEventListener('beforeunload', function (e) {
     dataLeg[window.location.host+window.location.pathname] = heatmapInstance.getData();
     var json = JSON.stringify({
-      info:dataLeg,
-      statistic:{
-        unique:localStorage.getItem('visit')?true:false,
-        timeOnSite: performance.now()/1000,
-        rageQuit: performance.now()/1000 < 15?true: false,
-        endSite
+      // info:dataLeg,
+      // statistic:{
+      //   unique:localStorage.getItem('visit')?true:false,
+      //   timeOnSite: performance.now()/1000,
+      //   rageQuit: performance.now()/1000 < 15?true: false,
+      //   endSite
 
-      }
+      // }
     });
     console.log(json);
     var xhr = new XMLHttpRequest();
