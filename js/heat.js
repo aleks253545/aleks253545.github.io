@@ -728,7 +728,7 @@ let token,dataLeg,usIdж
   window.addEventListener('beforeunload', function (e) {
     dataLeg[window.location.host+window.location.pathname] = heatmapInstance.getData();
     var json = JSON.stringify({
-      info:{},
+      info:dataLeg,
       statistic:{
         unique:localStorage.getItem('visit')?true:false,
         timeOnSite: performance.now()/1000,
